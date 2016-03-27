@@ -30,27 +30,6 @@ maxposy=estposy-errorwindow+maxposy-1;
 sampsf=orgfig(maxposx-windowsize:maxposx+windowsize,maxposy-windowsize:...
     maxposy+windowsize);
 
-%We assume the psf is uniformly distributed in a small area (for PMO data,
-%5 pixle) and if they are not like that,we will directly return an all zero
-%image
-%outscale is a sequare that outside the window and will be used here (It
-%depends on your choice and is possble to chage, we use the pixels outside
-%the psf as test...)
-outscale=[orgfig(maxposx-(windowsize+1):maxposx+(windowsize+1),maxposy-(windowsize+1)),...
-    orgfig(maxposx-(windowsize+1):maxposx+(windowsize+1),maxposy+(windowsize+1)),...
-    orgfig(maxposx-(windowsize+1),maxposy-(windowsize+1):maxposy+(windowsize+1))',...
-    orgfig(maxposx+(windowsize+1),maxposy-(windowsize+1):maxposy+(windowsize+1))'];
-%Test nonuniformty with the outscale 
-if max(max(outscale))/min(min(outscale))>1.1
-    %return abnormal psf as all zero value
-    sampsf=zeros(2*windowsize+1,2*windowsize+1);
-    %return max position as 0,0 for error detection...
-    maxposx=0;
-    maxposy=0;
-    return
-end
-
-
 
 %% Second Part: background substraction
 backimg=orgfig(maxposx-2*windowsize:maxposx+2*windowsize,maxposy-...

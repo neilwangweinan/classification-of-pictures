@@ -21,7 +21,7 @@ obj_orimg=immultiply(objimg,orimg);                  %extract objects of the pic
 %figure,imshow(mat2gray(obj_orimg))                  %show objects of the orgin picture
 %disp(['There are ' num2str(num_obj) ' labels of the picture.']) %show the number of labels
 
-  IndexMatrix_obj=zeros(num_obj,3);      
+  IndexMatrix_obj=zeros(num_obj,4);      
 % IndexMatrix_obj=zeros(num_obj,2); 
 for num_label= 1:num_obj       
       [x_Label_objimg y_Label_objimg]=find(Label_objimg==num_label);

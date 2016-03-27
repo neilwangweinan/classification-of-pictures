@@ -4,6 +4,8 @@
 
 AllIndex_objimg=cell(num_img4,4);
 
+Allsamplepsf=cell(num_img4,4);
+
  for i=1:num_img4
      img_4=all_img4(:,:,i);
      [Index_objimg,num_label]=Getposobj(img_4); 
@@ -23,3 +25,6 @@ AllIndex_objimg=cell(num_img4,4);
      [Index_objimg,num_label]=Getposobj(img_2);  
      AllIndex_objimg{i,2}=Index_objimg;           %read Index_objimg by cell Array
  end
+ 
+ clear img_2 img_3 img_4 num_label Index_objimg i
+ 
