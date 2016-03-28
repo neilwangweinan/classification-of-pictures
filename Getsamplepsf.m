@@ -1,4 +1,4 @@
-function [samplepsf] = Getsamplepsf(orimg,errorwindow,windowsize,IndexMatrix_obj)
+function [samplepsf,IndexMatrix_obj] = Getsamplepsf(orimg,errorwindow,windowsize,IndexMatrix_obj)
 %% this function aims to get PSF in a orimg; so we need errowwindow and fixing psfwindow.
 
 [row_num,colum_num]=size(IndexMatrix_obj);
@@ -9,8 +9,8 @@ row=1;
 while row <= row_num          % this was a BUG... replacing of ‘row < row_num’
     estposx=IndexMatrix_obj(row,1);  
     estposy=IndexMatrix_obj(row,2);
-%     errorwindow=ceil(sqrt(IndexMatrix_obj(row,3)))+2;
-    if (estposx<=errorwindow) || (estposy <= errorwindow) || (estposx+errorwindow >1024) || (estposy+errorwindow > 1024)
+% errorwindow=ceil(sqrt(IndexMatrix_obj(row,3)))+2;
+    if (estposx<=2*errorwindow)||(estposy <= 2*errorwindow)||(estposx+2*errorwindow >= size(orimg,1))||(estposy+2*errorwindow >= size(orimg,1))
        IndexMatrix_obj(row,:)=[];              %delete one row
         row_num=row_num-1;
     else                      %this was a bug... replacing of ’end‘ 
@@ -33,19 +33,21 @@ for row = 1:row_num
     [maxposx,maxposy]=find(ticimg==max(max(ticimg)),1);
     maxposx=estposx-errorwindow+maxposx-1;
     maxposy=estposy-errorwindow+maxposy-1;
+    
     samplepsf{row,1}=maxposx;
     samplepsf{row,2}=maxposy;
     
     %Cut part of image from orimg with the psf center in middle of psffig
     sampsf=orimg(maxposx-windowsize:maxposx+windowsize,maxposy-windowsize:...
-        maxposy+windowsize);
-    
+       maxposy+windowsize);
+%     sampsf=orimg(estposx-windowsize:estposx+windowsize,estposy-windowsize:...
+%         estposy+windowsize);
     %---Part: background substraction    
     % an unresolved Bug: if maxposx-2*windowsize<0
-    backimg=orimg(maxposx-2*windowsize:maxposx+2*windowsize,maxposy-...
-    2*windowsize:maxposy+2*windowsize);
+    backimg=orimg(maxposx-windowsize:maxposx+windowsize,maxposy-...
+    windowsize:maxposy+windowsize);
 
-    backimg=reshape(backimg,(4*windowsize+1)^2,1);
+    backimg=reshape(backimg,(2*windowsize+1)^2,1);
     back=(backimg);
     standardvar=std(backimg);
     %delete the image with less than 3 sigma
@@ -59,7 +61,6 @@ for row = 1:row_num
     % Third Part: N normalization psf 
     sampsf=sampsf/max(max(sampsf));
     
-
     samplepsf{row,3}=sampsf;
     
 end
