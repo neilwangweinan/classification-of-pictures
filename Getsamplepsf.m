@@ -1,4 +1,4 @@
-function [samplepsf,IndexMatrix_obj] = Getsamplepsf(orimg,errorwindow,windowsize,IndexMatrix_obj)
+function [samplepsf] = Getsamplepsf(orimg,errorwindow,windowsize,IndexMatrix_obj)
 %% this function aims to get PSF in a orimg; so we need errowwindow and fixing psfwindow.
 
 [row_num,colum_num]=size(IndexMatrix_obj);
@@ -6,14 +6,14 @@ function [samplepsf,IndexMatrix_obj] = Getsamplepsf(orimg,errorwindow,windowsize
 
 row=1;
 %remove brim and invalid objects
-while row <= row_num          % this was a BUG... replacing of ‘row < row_num’
+while row <= row_num          % this was a BUG... replacing of â€˜row < row_numâ€™
     estposx=IndexMatrix_obj(row,1);  
     estposy=IndexMatrix_obj(row,2);
 % errorwindow=ceil(sqrt(IndexMatrix_obj(row,3)))+2;
     if (estposx<=2*errorwindow)||(estposy <= 2*errorwindow)||(estposx+2*errorwindow >= size(orimg,1))||(estposy+2*errorwindow >= size(orimg,1))
        IndexMatrix_obj(row,:)=[];              %delete one row
         row_num=row_num-1;
-    else                      %this was a bug... replacing of ’end‘ 
+    else                      %this was a bug... replacing of â€™endâ€˜ 
     row=row+1;    
     end
 end
