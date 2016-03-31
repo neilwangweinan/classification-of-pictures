@@ -35,4 +35,52 @@ windowsize=3;
      AllIndex_objimg{i,1}=Index_objimg;           %read Index_objimg by cell Array
      Allsamplepsf{i,1}=Getsamplepsf(img_1,errorwindow,windowsize,Index_objimg);
  end
-clear img_1 img_2 img_3 img_4 num_label Index_objimg i
+ 
+
+numvecpsf=0;
+for i=1:num_img1
+    numvecpsf=numvecpsf+size(Allsamplepsf{i,1},1);
+end
+for i=1:num_img2
+    numvecpsf=numvecpsf+size(Allsamplepsf{i,2},1);
+end
+for i=1:num_img3
+    numvecpsf=numvecpsf+size(Allsamplepsf{i,3},1);
+end
+for i=1:num_img4
+    numvecpsf=numvecpsf+size(Allsamplepsf{i,4},1);
+end
+
+num=1;
+while num <=numvecpsf
+    for i=1:num_img1
+        for j=1:size(Allsamplepsf{i,1},1)
+            Vecpsf=cell2mat(Allsamplepsf{i,1}(j,3));
+            Allvecpsf(num,:)=reshape(Vecpsf,size(Vecpsf(:),1),1);
+            num=num+1;
+        end
+    end
+    for i=1:num_img2
+        for j=1:size(Allsamplepsf{i,2},1)
+            Vecpsf=cell2mat(Allsamplepsf{i,2}(j,3));
+            Allvecpsf(num,:)=reshape(Vecpsf,size(Vecpsf(:),1),1);
+            num=num+1;
+        end
+    end
+    for i=1:num_img3
+        for j=1:size(Allsamplepsf{i,3},1)
+            Vecpsf=cell2mat(Allsamplepsf{i,3}(j,3));
+            Allvecpsf(num,:)=reshape(Vecpsf,size(Vecpsf(:),1),1);
+            num=num+1;
+        end
+    end
+    for i=1:num_img4
+        for j=1:size(Allsamplepsf{i,4},1)
+            Vecpsf=cell2mat(Allsamplepsf{i,4}(j,3));
+            Allvecpsf(num,:)=reshape(Vecpsf,size(Vecpsf(:),1),1);
+            num=num+1;
+        end
+    end
+end
+
+clear img_1 img_2 img_3 img_4 num_label Index_objimg i j num Vecpsf
