@@ -3,8 +3,8 @@ function [coef,score,latent]=PCAdecon(psf)
 % PCA decline dimension
 psf=psf-mean(psf(:));
 [coef,score,latent] = princomp(psf);
-latent=100*latent/sum(latent);%?latent?????100????????
-%pareto(latent);%??matla??
+latent=100*latent/sum(latent);
+%pareto(latent);  
 csum=cumsum(latent);
 for i = 1:size(latent,1)   
  if csum(i) >= 85
