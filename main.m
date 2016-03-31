@@ -83,4 +83,7 @@ while num <=numvecpsf
     end
 end
 
+[coef,score,latent]=PCAdecon(Allvecpsf);
+
+
 clear img_1 img_2 img_3 img_4 num_label Index_objimg i j num Vecpsf
